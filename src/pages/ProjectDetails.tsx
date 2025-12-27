@@ -125,6 +125,7 @@ export default function ProjectDetails() {
 
   const { project, inquiries, comments, status_history } = data;
   const isAdminOrManager = currentUser?.role === 'admin' || currentUser?.role === 'sales_manager';
+  const isAdmin = currentUser?.role === 'admin';
 
   return (
     <div className="space-y-6 pb-20">
@@ -253,7 +254,9 @@ export default function ProjectDetails() {
                     <tbody className="divide-y divide-gray-100">
                       {inquiries.map(inq => {
                         const unitPrice = inq.sell_price_eur_snapshot;
-                        const showPrice = unitPrice !== null && unitPrice !== undefined;
+                        const hasPrice = unitPrice !== null && unitPrice !== undefined;
+                        const isApproved = inq.status === 'approved';
+                        const shouldBlur = hasPrice && !isApproved && !isAdmin;
 
                         return (
                           <tr key={inq.id} className="hover:bg-gray-50">
@@ -276,10 +279,18 @@ export default function ProjectDetails() {
                               </span>
                             </td>
                             <td className="p-3 font-mono text-gray-600 whitespace-nowrap">
-                              {showPrice ? `€${unitPrice.toLocaleString()}` : '---'}
+                              {hasPrice ? (
+                                <span className={shouldBlur ? 'blur-sm select-none' : ''}>
+                                  €{unitPrice.toLocaleString()}
+                                </span>
+                              ) : '---'}
                             </td>
                             <td className="p-3 font-mono font-bold text-sky-700 whitespace-nowrap">
-                              {showPrice ? `€${(unitPrice * inq.quantity).toLocaleString()}` : '---'}
+                              {hasPrice ? (
+                                <span className={shouldBlur ? 'blur-sm select-none' : ''}>
+                                  €{(unitPrice * inq.quantity).toLocaleString()}
+                                </span>
+                              ) : '---'}
                             </td>
                           </tr>
                         );
@@ -292,8 +303,8 @@ export default function ProjectDetails() {
                 </div>
               </div>
             </div>
-            {!isAdminOrManager && (
-              <p className="text-xs text-gray-400 mt-4">* قیمت‌ها فقط برای استعلام‌های تایید شده و توسط ایجادکننده قابل مشاهده است.</p>
+            {!isAdmin && (
+              <p className="text-xs text-gray-400 mt-4">* قیمت‌ها تا زمان تایید ادمین کل محو می‌باشند و پس از تایید قابل مشاهده خواهند بود.</p>
             )}
           </div>
         )}
