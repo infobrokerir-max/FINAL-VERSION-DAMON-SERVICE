@@ -25,8 +25,8 @@ export default function AdminDevices() {
   const loadData = async () => {
     setLoading(true);
     const [dRes, cRes, sRes] = await Promise.all([
-      api.getDevices(), 
-      api.getCategories(),
+      api.getAdminDevices(),
+      api.getAdminCategories(),
       api.getSettings()
     ]);
     if (dRes.ok) setDevices(dRes.data);

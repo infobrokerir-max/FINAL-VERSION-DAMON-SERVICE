@@ -246,7 +246,8 @@ export const api = {
   deleteCategory: (id: string) => callProtected('/admin/categories/delete', { id }),
 
   // Devices
-  getDevices: () => callProtected('/admin/devices/list'),
+  getDevices: () => callProtected('/devices/list'),
+  getAdminDevices: () => callProtected('/admin/devices/list'),
   searchDevices: (query: string, category_id?: string) => callProtected('/devices/search', { query, category_id }),
   createDevice: (data: Partial<Device>) => callProtected('/admin/devices/create', data),
   deleteDevice: (id: string) => callProtected('/admin/devices/delete', { id }),

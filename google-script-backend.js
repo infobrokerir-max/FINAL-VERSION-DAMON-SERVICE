@@ -76,8 +76,8 @@ function handle_(method, e) {
 
     // General (Authenticated)
     if (path === '/categories/list') return ok_(readAll_('categories').filter(c => isTrue_(c.is_active)));
+    if (path === '/devices/list') return ok_(readAll_('devices').filter(d => isTrue_(d.is_active)));
     if (path === '/devices/search') return devicesSearch_(user, req.params);
-    if (path === '/admin/devices/list' && user.role !== 'admin') return ok_(readAll_('devices'));
 
     if (path === '/users/staff') {
       return ok_(readAll_('users')
